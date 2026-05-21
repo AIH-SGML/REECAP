@@ -50,6 +50,8 @@ The code is adapted from:
 - [RETFound Project](https://github.com/rmaphoh/RETFound) — foundation model for retinal image understanding  
 - [Rank-N-Contrast](https://github.com/kaiwenzha/Rank-N-Contrast) — contrastive framework for regression tasks  
 
+Download pretrained RETFound weights (`RETFound_mae_natureCFP.pth`) from [HuggingFace](https://huggingface.co/YukunZhou/RETFound_mae_natureCFP) and place in `contrastive_training/data/` before running.
+
 **Environments, Usage, and Example Inputs**
 ```bash
 cd contrastive_training/RETFound_RnC_training
@@ -60,6 +62,11 @@ cd contrastive_training/RETFound_RnC_training
 conda env create -f contlearn.yml
 conda activate contlearn
 ```
+
+> **GPU training (Linux + CUDA):** The environment above installs CPU-only PyTorch and works on macOS and Linux. For GPU-accelerated training, additionally run after activation:
+> ```bash
+> conda install pytorch-cuda=11.8 -c pytorch -c nvidia
+> ```
 
 - Run example (trains on folds 1–4, tests on fold 5; ~2 min on 1× A100):
 ```bash
@@ -111,12 +118,10 @@ conda install -c conda-forge \
     matplotlib=3.7.2 \
     scikit-learn=1.3.0 \
     statsmodels=0.14.0 \
-    pytorch=2.2.0 \
     tqdm=4.66.1 \
-    limix-core=1.0.2 \
-    chiscore=0.2.2
+    limix-core=1.0.2
 
-pip install limix-lmm==0.1.2 statsmodels==0.14.0 torch
+pip install torch==2.2.0 chiscore==0.2.2 limix-lmm==0.1.2
 pip install -e .
 ```
 
@@ -151,6 +156,11 @@ cd generative_model
 conda env create -f genmodel.yml
 conda activate PGAN
 ```
+
+> **GPU training (Linux + CUDA):** The environment above installs CPU-only PyTorch and works on macOS and Linux. For GPU-accelerated training, additionally run after activation:
+> ```bash
+> pip install torch==1.13.1+cu118 torchvision==0.14.1+cu118 --extra-index-url https://download.pytorch.org/whl/cu118
+> ```
 
 - Run example (train the generative model):
 ```bash

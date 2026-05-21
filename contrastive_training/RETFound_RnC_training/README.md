@@ -29,24 +29,17 @@ RETFound_RnC_training/
 ## Usage
 
 ### 1. Installation
+
+**CPU / macOS (for testing with example data):**
 ```
 conda env create -f contlearn.yml
 conda activate contlearn
 ```
 
-OR
-
+**GPU training on Linux (CUDA 12.1):**
 ```
-conda create -n contlearn python=3.9.18
+conda env create -f contlearn_gpu.yml
 conda activate contlearn
-conda install pytorch=2.2.1 torchvision=0.17.1 pytorch-cuda=12.1 -c pytorch -c nvidia
-pip install \
-timm==0.9.16 \
-numpy==1.26.4 \
-pandas==2.2.1 \
-scikit-learn==1.4.1.post1 \
-pillow==10.2.0 \
-tqdm==4.67.1
 ```
 
 ### 2. Prepare Data
@@ -76,7 +69,7 @@ Download the RETFound model weights (ViT-Large, MAE pretraining) from the origin
 👉 https://huggingface.co/YukunZhou/RETFound_mae_natureCFP
 
 Download the file:
-`RETFound_mae_natureCFP.cfp`
+`RETFound_mae_natureCFP.pth`
 
 Place it in the `./data` folder.
 

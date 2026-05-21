@@ -1,20 +1,17 @@
 name: contlearn
-
 channels:
-  - pytorch
   - conda-forge
   - nodefaults
 
 dependencies:
   - python=3.9.18
-
-  # conda packages — CPU version (works on macOS and Linux)
-  - pytorch=2.2.1
-  - torchvision=0.17.1
-
-  # pip
   - pip
+
   - pip:
+      # PyTorch with CUDA 12.1 — pip wheels bundle all nvidia-* libs, no conda conflicts
+      - --extra-index-url https://download.pytorch.org/whl/cu121
+      - torch==2.2.1+cu121
+      - torchvision==0.17.1+cu121
       - timm==0.9.16
       - numpy==1.26.4
       - pandas==2.2.1
