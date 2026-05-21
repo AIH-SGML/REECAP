@@ -1,0 +1,14 @@
+{
+    "pathDB": "../data/example_embeddings.h5ad",
+    "config": {
+        "maxIterAtScale": [
+            48000,
+            96000,
+            96000,
+            96000,
+            96000,
+            96000,
+            1000000
+        ]
+    }
+}
