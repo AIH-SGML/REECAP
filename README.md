@@ -2,7 +2,7 @@
 
 This repository contains the source code accompanying the paper:
 
-**[“REECAP: Representation Learning for End-to-End Clinical and Genetic Analysis from Retinal Images”](https://www.medrxiv.org/content/10.1101/2025.11.19.25340555v2)**
+**["REECAP: Contrastive learning of retinal aging reveals genetic loci linking morphology to eye disease"](https://www.medrxiv.org/content/10.1101/2025.11.19.25340555v2)**
 
 The source code integrates **contrastive representation learning**, **generative modeling**, and **genome-wide association analysis**.
 
@@ -46,68 +46,22 @@ The encoder produces **1024-dimensional embeddings** per image. These are reduce
 - `best_train_embeddings.csv`, `best_test_embeddings.csv` — per-fold embeddings
 - `embeddings.h5ad` — AnnData file with PCA-reduced embeddings and metadata
 
-**Entry point:** `contrastive_training/RETFound_RnC_training/train.py`
- 
-
 The code is adapted from:  
 - [RETFound Project](https://github.com/rmaphoh/RETFound) — foundation model for retinal image understanding  
 - [Rank-N-Contrast](https://github.com/kaiwenzha/Rank-N-Contrast) — contrastive framework for regression tasks  
 
-
----
-
-### Stage 2 — Genetic analysis (`mtgwas/`)
-
-The 40-dimensional embeddings are used as multi-trait phenotypes in a **genome-wide association study (GWAS)**. Two analyses are run:
-
-- **Multi-trait GWAS** (`MTGWAS` class) — tests all 40 embedding dimensions jointly against each genetic variant
-- **Leave-one-out predictions** (`VCtest.predict_loo`) — for each participant, predicts a scalar score (e.g. disease in 5 years, age, or a genetic variant effect) using a variance component model trained on the remaining samples
-
-The LOO predictions are written back into `adata.obs` in the AnnData file, making them available to the generative visualization stage.
-
-**Key outputs:**
-- GWAS p-values, effect sizes, and standard errors
-- LOO prediction scores stored in `adata.obs` (e.g. `disease_in5`, `age`, per-variant scores)
-
-**Entry point:** `mtgwas/example_run.py`
-
----
-
-### Stage 3 — Generative visualization (`generative_model/`)
-
-A **Progressive GAN (PGAN)** is trained to reconstruct fundus images from their embeddings, conditioned on eye laterality (left/right) and random noise. Once trained, it is used to visualize what biological variation the embedding axes capture, which helps to interpret the initial encoding process and then to visualize possible morphological effects of a genetic veriant.
-
-For a given axis of interest (e.g. LOO-predicted disease in 5 years, age, or a genetic variant effect), participants are ranked by their predicted score. The **top and bottom 0.1%** are identified, and their **mean embeddings** define the two extremes of that axis. The generator then reconstructs images from these extreme embeddings and from **interpolations between them**, producing a visual summary of what retinal morphology changes along the axis.
-
-**Key outputs:**
-- Trained PGAN checkpoints (`reecap_s[1-5]_i[16000].pt`)
-- Reconstructed and interpolated fundus images for each axis of interest
-
-**Entry points:**
-- Training: `generative_model/PGAN/experiments/train_PGAN.py`
-- Visualization: `generative_model/PGAN/experiments/reconstruct_disease_in_5_effect.py`
-
----
-
-## Environments, Usage, and Example Inputs
-
-Each stage of the pipeline is **self-contained**, with its own conda environment, setup instructions, and example data.
-
----
-
-### Stage 1 — Contrastive Training
-
+**Environments, Usage, and Example Inputs**
 ```bash
 cd contrastive_training/RETFound_RnC_training
 ```
 
-**Installation:**
+- Installation:
 ```bash
 conda env create -f contlearn.yml
 conda activate contlearn
 ```
 
-**Run example** (trains on folds 1–4, tests on fold 5; ~2 min on 1× A100):
+- Run example (trains on folds 1–4, tests on fold 5; ~2 min on 1× A100):
 ```bash
 python train.py \
     --path_table_file ../data/path_table.csv \
@@ -124,7 +78,20 @@ See the README in this folder for data preparation and pretrained weight downloa
 
 ---
 
-### Stage 2 — Genetic Analysis
+### Stage 2 — Genetic analysis (`mtgwas/`)
+
+The 40-dimensional embeddings are used as multi-trait phenotypes in a **genome-wide association study (GWAS)**. Two analyses are run:
+
+- **Multi-trait GWAS** (`MTGWAS` class) — tests all 40 embedding dimensions jointly against each genetic variant
+- **Leave-one-out predictions** (`VCtest.predict_loo`) — for each participant, predicts a scalar score (e.g. disease in 5 years, age, or a genetic variant effect) using a variance component model trained on the remaining samples
+
+The LOO predictions are written back into `adata.obs` in the AnnData file, making them available to the generative visualization stage.
+
+**Key outputs:**
+- GWAS p-values, effect sizes, and standard errors
+- LOO prediction scores stored in `adata.obs` (e.g. `disease_in5`, `age`, per-variant scores)
+
+**Environments, Usage, and Example Inputs**
 
 > **Note:** This stage is expected to run on a **Linux** environment.
 
@@ -132,7 +99,7 @@ See the README in this folder for data preparation and pretrained weight downloa
 cd mtgwas
 ```
 
-**Installation:**
+- Installation:
 ```bash
 conda create -n mtgwas python=3.11
 conda activate mtgwas
@@ -153,26 +120,39 @@ pip install limix-lmm==0.1.2 statsmodels==0.14.0 torch
 pip install -e .
 ```
 
-**Run example** (~2 min with 12 CPUs):
+- Run example (~2 min with 12 CPUs):
 ```bash
 python example_run.py
 ```
 
 ---
 
-### Stage 3 — Generative Model
+### Stage 3 — Generative visualization (`generative_model/`)
 
+A **Progressive GAN (PGAN)** is trained to reconstruct fundus images from their embeddings, conditioned on eye laterality (left/right) and random noise. Once trained, it is used to visualize what biological variation the embedding axes capture, which helps to interpret the initial encoding process and then to visualize possible morphological effects of a genetic veriant.
+
+For a given axis of interest (e.g. LOO-predicted disease in 5 years, age, or a genetic variant effect), participants are ranked by their predicted score. The **top and bottom 0.1%** are identified, and their **mean embeddings** define the two extremes of that axis. The generator then reconstructs images from these extreme embeddings and from **interpolations between them**, producing a visual summary of what retinal morphology changes along the axis.
+
+**Key outputs:**
+- Trained PGAN checkpoints (`reecap_s[1-5]_i[16000].pt`)
+- Reconstructed and interpolated fundus images for each axis of interest
+
+**Entry points:**
+- Training: `generative_model/PGAN/experiments/train_PGAN.py`
+- Visualization: `generative_model/PGAN/experiments/reconstruct_disease_in_5_effect.py`
+
+**Environments, Usage, and Example Inputs**
 ```bash
 cd generative_model
 ```
 
-**Installation:**
+- Installation:
 ```bash
 conda env create -f genmodel.yml
 conda activate PGAN
 ```
 
-**Run example** (train the generative model):
+- Run example (train the generative model):
 ```bash
 python PGAN/experiments/train_PGAN.py
 ```
