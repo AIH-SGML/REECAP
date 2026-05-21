@@ -36,7 +36,7 @@ Field 131208-0.0 : Date H52 (Disorders of refraction) first reported
 Field 131212-0.0 : Date H54 (Blindness and low vision) first reported
 Field 131178-0.0 : Date H33 (Retinal detachments) first reported
 Field 131184-0.0 : Date H36 (Retinal disorders in diseases elsewhere) first reported
-PRS file         : ukb670475.csv — fields 26265-0.0 (glaucoma PRS),
+PRS file         : prs_scores.csv — fields 26265-0.0 (glaucoma PRS),
                    26204-0.0 (AMD PRS)
 
 Output
@@ -315,7 +315,7 @@ def main():
     H33_first_diagnosed = join(phenodir, "phenos/131178-0.0.csv")   # Retinal detachment
     H36_first_diagnosed = join(phenodir, "phenos/131184-0.0.csv")   # Diabetic retinopathy
 
-    prs_file = join(phenodir, "prs/ukb670475.csv")  # Polygenic risk scores
+    prs_file = join(phenodir, "prs_scores.csv")  # Polygenic risk scores
 
     # ------------------------------------------------------------------
     # Load AnnData and extract EIDs from image paths
