@@ -4,6 +4,9 @@ channels:
 dependencies:
   - python=3.9.19
   - pip
+  # CUDA for GPU acceleration (adjust version as needed for your hardware)
+  - cudatoolkit=11.8.0
+  - cudnn=8.9.7.29
   # Scientific stack (conda-managed for better native lib linking)
   - scipy=1.13.1
   - pandas=2.2.2
