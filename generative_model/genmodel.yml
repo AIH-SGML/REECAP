@@ -24,6 +24,6 @@ dependencies:
       - Pillow==11.3.0
       - seaborn==0.13.2
       - pypandoc==1.15
-      - imageio          # not in original env — pin after first successful run
+      - imageio
       # mtgwas is a local dev package — install separately:
       #   pip install -e /path/to/mtgwas

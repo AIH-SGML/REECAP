@@ -149,7 +149,7 @@ For a given axis of interest (e.g. LOO-predicted disease in 5 years, age, or a g
 
 **Environments, Usage, and Example Inputs**
 ```bash
-cd generative_model/PGAN/experiments
+cd generative_model
 ```
 
 - Installation:
@@ -158,14 +158,9 @@ conda env create -f genmodel.yml
 conda activate PGAN
 ```
 
-> **GPU training (Linux + CUDA):** The environment above installs CPU-only PyTorch and works on macOS and Linux. For GPU-accelerated training, additionally run after activation:
-> ```bash
-> pip install torch==1.13.1+cu118 torchvision==0.14.1+cu118 --extra-index-url https://download.pytorch.org/whl/cu118
-> ```
-
-- Run example (train the generative model):
+- Run example (train the generative model, ~ 6 hours on Linux, A100 GPU):
 ```bash
-python train_PGAN.py
+python /PGAN/experiments/train_PGAN.py
 ```
 
 See [generative_model/PGAN/README.md](generative_model/PGAN/README.md) for visualization and reconstruction scripts.
