@@ -63,10 +63,11 @@ conda env create -f contlearn.yml
 conda activate contlearn
 ```
 
-> **GPU training (Linux + CUDA):** The environment above installs CPU-only PyTorch and works on macOS and Linux. For GPU-accelerated training, additionally run after activation:
-> ```bash
-> conda install pytorch-cuda=11.8 -c pytorch -c nvidia
-> ```
+> **GPU training (Linux + CUDA):** The environment above installs CPU-only PyTorch and works on macOS and Linux. For GPU-accelerated training, opt for:
+```bash
+conda env create -f contlearn_gpu.yml
+conda activate contlearn
+```
 
 - Run example (trains on folds 1–4, tests on fold 5; ~2 min on 1× A100):
 ```bash
@@ -148,7 +149,7 @@ For a given axis of interest (e.g. LOO-predicted disease in 5 years, age, or a g
 
 **Environments, Usage, and Example Inputs**
 ```bash
-cd generative_model
+cd generative_model/PGAN/experiments
 ```
 
 - Installation:
@@ -164,7 +165,7 @@ conda activate PGAN
 
 - Run example (train the generative model):
 ```bash
-python PGAN/experiments/train_PGAN.py
+python train_PGAN.py
 ```
 
 See [generative_model/PGAN/README.md](generative_model/PGAN/README.md) for visualization and reconstruction scripts.
