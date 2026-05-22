@@ -419,7 +419,8 @@ class GANTrainer():
         self.model.n_devices = 4    # Changing number of workers from 6 to 4
         return torch.utils.data.DataLoader(dataset,
                                            batch_size=self.modelConfig.miniBatchSize,
-                                           shuffle=True, num_workers=self.model.n_devices)
+                                           shuffle=True, num_workers=self.model.n_devices,
+                                           drop_last=True)
 
     def getDataset(self, scale, tissue=None, size=None):
 

@@ -26,5 +26,5 @@ def create_json_file(tissue):
         json.dump(data_tissue, json_file, indent=4)
 
 os.chdir('..')
-cmd = "python train.py PGAN -c ./config/config.json -n reecap --dir ../data/output"
+cmd = "python train.py PGAN -c ./config/config.json -n reecap --dir ../data/output --no_vis"
 os.system(cmd)
