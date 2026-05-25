@@ -109,20 +109,28 @@ cd mtgwas
 
 - Installation:
 ```bash
-conda create -n mtgwas python=3.11
+# 1. Create conda environment with pinned scientific stack
+conda create -n mtgwas \
+  python=3.11 numpy=1.25.2 pandas=2.1.0 scipy=1.11.2 \
+  matplotlib=3.7.2 scikit-learn=1.3.0 tqdm=4.66.1 \
+  limix-core=1.0.2 chiscore=0.2.2 "setuptools<81" \
+  -c conda-forge
+
+# 2. Install PyTorch (CPU)
+conda install -n mtgwas pytorch=2.3.0 cpuonly -c pytorch -c conda-forge
+
+# 3. Activate and install pip packages
 conda activate mtgwas
 
-conda install -c conda-forge \
-    numpy=1.25.2 \
-    pandas=2.1.0 \
-    scipy=1.11.2 \
-    matplotlib=3.7.2 \
-    scikit-learn=1.3.0 \
-    statsmodels=0.14.0 \
-    tqdm=4.66.1 \
-    limix-core=1.0.2
+cat > /tmp/mtgwas_constraints.txt << 'EOF'
+numpy==1.25.2
+pandas==2.1.0
+scipy==1.11.2
+EOF
 
-pip install torch==2.2.0 chiscore==0.2.2 limix-lmm==0.1.2
+pip install statsmodels==0.14.0 limix-lmm==0.1.2 -c /tmp/mtgwas_constraints.txt
+
+# 4. Install the package
 pip install -e .
 ```
 

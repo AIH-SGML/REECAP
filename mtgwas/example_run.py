@@ -29,4 +29,7 @@ pvalues = mtgwas.getPv()
 betas = mtgwas.getBetaSNP()
 se = mtgwas.getBetaSNPste()
 
+print("P-values:\n", pvalues)
+print("Beta coefficients:\n", betas)
+print("Standard errors:\n", se)
 print("GWAS completed.")
